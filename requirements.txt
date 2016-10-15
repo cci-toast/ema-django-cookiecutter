@@ -1,0 +1,11 @@
+Django==1.10.2
+django-click==1.2.0
+django-extensions==1.7.4
+ipython==5.1.0
+Django==1.10.2
+django-click==1.2.0
+django-extensions==1.7.4
+ipython-genutils==0.1.0
+pytest-django==3.0.0
+pytest-sugar==0.7.1
+django-test-plus==1.0.15
