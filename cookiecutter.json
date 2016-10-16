@@ -1,4 +1,7 @@
 {
     "project_dir": "foo",
     "project_name": "The Foo Project",
+    "_copy_without_render": [
+        "templates/base.html"
+    ]
 }
