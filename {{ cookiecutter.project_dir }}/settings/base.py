@@ -1,4 +1,12 @@
 import os
+import warnings
+
+from envparse import env
+
+# Read in our environment variables
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore")
+    env.read_envfile()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -68,6 +76,14 @@ DATABASES = {
 # Only used in production
 AUTH_PASSWORD_VALIDATORS = []
 
+# Sessions
+
+# Give each project their own session cookie name to avoid local development
+# login conflicts
+SESSION_COOKIE_NAME = "{{ cookiecutter.project_dir }}-sessionid"
+
+# Increase default cookie age from 2 to 12 weeks
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 7 * 12
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
