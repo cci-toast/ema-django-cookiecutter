@@ -24,8 +24,11 @@ services:
       - DJANGO_READ_DOT_ENV_FILE=true
       - PGHOST=db
       - PYTHONDONTWRITEBYTECODE=true
+{%- if cookiecutter.redis %}
   redis:
     image: "redis:alpine"
+{%- endif -%}
+{%- if cookiecutter.celery %}
   celery:
     build: .
     command: celery -A config worker -l debug
@@ -37,6 +40,7 @@ services:
     environment:
       - DJANGO_READ_DOT_ENV_FILE=true
       - PYTHONDONTWRITEBYTECODE=true
+{% endif -%}
 
 volumes:
   postgres_data:

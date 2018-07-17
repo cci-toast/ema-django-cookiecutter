@@ -16,9 +16,15 @@ pydot==1.2.4
 python-json-logger==0.1.8
 structlog==18.1.0
 
+{% if cookiecutter.redis %}
+redis==2.10.6
+{% endif %}
+
+{% if cookiecutter.celery %}
 # Celery
 celery==4.2.0
 redis==2.10.6
+{% endif %}
 
 # Testing
 django-test-plus==1.1.1

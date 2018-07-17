@@ -198,8 +198,9 @@ handler.setFormatter(jsonlogger.JsonFormatter())
 
 root.addHandler(handler)
 
-REDIS_HOST = env('REDIS_HOST', default="redis")
+{% if cookiecutter.redis %}REDIS_HOST = env('REDIS_HOST', default="redis"){% endif %}
 
+{%- if cookiecutter.celery %}
 # Configure Celery
 CELERY_BROKER_URL = f'redis://{REDIS_HOST}:6379'
 CELERY_RESULT_BACKEND = f'redis://{REDIS_HOST}:6379'
@@ -207,3 +208,4 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'America/Los_Angeles'
+{% endif -%}

@@ -4,7 +4,7 @@
 
 ## Local Development Setup
 
-All REVSYS projects going forward will use Python 3.5. Make a Python 3.5.x virtualenv and install the dependencies:
+All REVSYS projects going forward will use Python 3.6. Make a Python 3.6.x virtualenv and install the dependencies:
 
     pip install -r requirements.txt
 

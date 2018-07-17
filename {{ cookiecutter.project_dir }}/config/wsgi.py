@@ -1,5 +1,5 @@
 """
-WSGI config for {{ config.project_name }}.
+WSGI config for {{ cookiecutter.project_name }}.
 """
 
 import os

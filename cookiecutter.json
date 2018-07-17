@@ -2,6 +2,7 @@
     "project_dir": "foo",
     "project_name": "The Foo Project",
     "celery": true,
+    "redis": true,
     "_copy_without_render": [
         "templates/base.html"
     ]
