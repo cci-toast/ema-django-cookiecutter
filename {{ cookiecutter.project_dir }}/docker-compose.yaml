@@ -5,9 +5,10 @@ services:
   db:
     image: postgres
     environment:
-      - POSTGRES_DB=miro
+      - POSTGRES_DB={{ cookiecutter.project_dir }}
     volumes:
       - postgres_data:/var/lib/postgresql/data/
+
   web:
     build: .
     env_file:
@@ -24,11 +25,11 @@ services:
       - DJANGO_READ_DOT_ENV_FILE=true
       - PGHOST=db
       - PYTHONDONTWRITEBYTECODE=true
-{%- if cookiecutter.redis == 'True' %}
+{% if cookiecutter.redis == 'True' %}
   redis:
     image: "redis:alpine"
-{%- endif -%}
-{%- if cookiecutter.celery == 'True' %}
+{% endif -%}
+{% if cookiecutter.celery == 'True' %}
   celery:
     build: .
     command: celery -A config worker -l debug
@@ -40,7 +41,6 @@ services:
     environment:
       - DJANGO_READ_DOT_ENV_FILE=true
       - PYTHONDONTWRITEBYTECODE=true
-{% endif -%}
-
+{% endif %}
 volumes:
   postgres_data:
