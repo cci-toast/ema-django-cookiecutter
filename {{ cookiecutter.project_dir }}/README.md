@@ -4,19 +4,25 @@
 
 ## Local Development Setup
 
-All REVSYS projects going forward will use Python 3.6. Make a Python 3.6.x virtualenv and install the dependencies:
+All REVSYS projects going forward will use Python 3.6, Docker, and Docker Compose.
 
-    pip install -r requirements.txt
+Make a Python 3.6.x virtualenv.
 
 Copy env.template to .env and adjust values to match your local environment:
 
     cp env.template .env
 
+Then run
+
+    docker-compose up
+
+This will create the Docker image, install dependencies, start the services defined in `docker-compose.yaml`, and start the webserver.
+
 ## Running the tests
 
-To run the tests simply execute:
+To run the tests, execute:
 
-    py.test
+    docker-compose run --rm web pytest
 
 ## Deploying
 
