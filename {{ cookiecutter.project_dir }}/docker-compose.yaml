@@ -24,11 +24,11 @@ services:
       - DJANGO_READ_DOT_ENV_FILE=true
       - PGHOST=db
       - PYTHONDONTWRITEBYTECODE=true
-{%- if cookiecutter.redis %}
+{%- if cookiecutter.redis == 'True' %}
   redis:
     image: "redis:alpine"
 {%- endif -%}
-{%- if cookiecutter.celery %}
+{%- if cookiecutter.celery == 'True' %}
   celery:
     build: .
     command: celery -A config worker -l debug
