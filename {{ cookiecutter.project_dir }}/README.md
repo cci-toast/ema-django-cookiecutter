@@ -2,6 +2,8 @@
 
 ## Overview
 
+[Project description]
+
 ## Local Development Setup
 
 All REVSYS projects going forward will use Python 3.6, Docker, and Docker Compose.
