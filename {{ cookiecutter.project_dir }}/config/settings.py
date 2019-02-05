@@ -16,7 +16,7 @@ if READ_DOT_ENV_FILE:
     print('The .env file has been loaded. See base.py for more information')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG', cast=bool, default=False)
+DEBUG = env('DJANGO_DEBUG', cast=bool, default=False)
 
 # Determine if we're in testing or not.
 TESTING = env('TESTING', cast=bool, default=False)
