@@ -9,6 +9,7 @@ django-db-geventpool
 bumpversion<0.6
 gunicorn
 gevent==1.4.0
+django-health-check==3.9.0
 
 # Logging
 python-json-logger==0.1.10

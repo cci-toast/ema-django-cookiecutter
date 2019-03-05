@@ -15,6 +15,9 @@ if READ_DOT_ENV_FILE:
     env.read_envfile()
     print("The .env file has been loaded. See base.py for more information")
 
+# Name of our service
+SERVICE_NAME = "{{ cookiecutter.project_name }}"
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DJANGO_DEBUG", cast=bool, default=False)
 
@@ -50,7 +53,13 @@ INSTALLED_APPS = [
 ]
 
 # Third-party apps
-INSTALLED_APPS += ["rest_framework", "rest_framework_swagger", "django_extensions"]
+INSTALLED_APPS += [
+    "rest_framework", 
+    "rest_framework_swagger", 
+    "django_extensions",
+    "health_check",
+    "health_check.db",
+]
 
 # Our Apps
 INSTALLED_APPS += []
