@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block extra_head %}
+<style>
+    .content {
+        display: grid;
+        align-items: center;
+        justify-items: center;
+        width: 100vw;
+        height: 100vh;
+    }
+
+    .logo {
+        text-align: center;
+        font-size: 2rem;
+    }
+
+    .logo img {
+        margin-bottom: 25px;
+    }
+    
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="logo">
+        <img src="{% static "/images/project-avocado.png" %}" />
+        <br />
+        {{ cookiecutter.project_name }}
+    </div>
+</div>
+{% endblock content %}
