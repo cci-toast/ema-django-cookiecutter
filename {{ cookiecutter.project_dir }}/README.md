@@ -34,3 +34,11 @@ TDB
 
 TDB
 
+### Health Checks
+
+Health checks can be viewed at `/health` in a browser or as JSON if you use
+`curl -H "Accept: application/json" http://localhost:8000/health/`
+
+Currently includes checks for: 
+
+- database
