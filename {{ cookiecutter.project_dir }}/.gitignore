@@ -11,6 +11,9 @@
 *.sublime-workspace
 *.sublime-project
 
+### VS Code ###
+*.code-workspace
+
 ### Python ###
 *.pyc
 *.pyo
