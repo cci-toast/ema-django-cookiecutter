@@ -1,7 +1,9 @@
+{% raw -%}
 {% extends "base.html" %}
 {% load staticfiles %}
 
 {% block extra_head %}
+{% endraw %}
 <style>
     .content {
         display: grid;
@@ -19,16 +21,20 @@
     .logo img {
         margin-bottom: 25px;
     }
-    
+
 </style>
+{% raw -%}
 {% endblock %}
 
 {% block content %}
+{% endraw %}
 <div class="content">
     <div class="logo">
-        <img src="{% static "/images/project-avocado.png" %}" />
+        <img src="{{ "{" }}% static "/images/project-avocado.png" %{{ "}" }}" />
         <br />
         {{ cookiecutter.project_name }}
     </div>
 </div>
+{% raw -%}
 {% endblock content %}
+{% endraw %}

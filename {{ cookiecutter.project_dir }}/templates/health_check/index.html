@@ -13,6 +13,7 @@
     <th>Status</th>
     <th class="w3-hide-small w3-hide-medium w3-right">Time Taken</th>
   </tr>
+  {% raw -%}
   {% for plugin in plugins %}
   <tr>
     <td class="w3-center" style="width: 50px">
@@ -27,6 +28,7 @@
     <td class="w3-hide-small w3-hide-medium w3-right">{{ plugin.time_taken|floatformat:4 }} seconds</td>
   </tr>
   {% endfor %}
+  {% endraw %}
 </table>
 </body>
 </html>

@@ -1,11 +1,11 @@
-<!DOCTYPE html>{% load static %}
+<!DOCTYPE html>{{ '{' }}% load static %{{ '}' }}
 <html>
   <head>
-    <title>{% block title %}{{ cookiecutter.project_name }}{% endblock %}</title>
+    <title>{{ '{'  }}% block title %{{ '}' }}{{ cookiecutter.project_name }}{{ '{' }}% endblock %{{ '}' }}</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+{% raw %}
     {% block extra_head %}{% endblock %}
   </head>
   <body>
@@ -14,4 +14,5 @@
   {% endblock %}
   {% block footer_js %}{% endblock %}
   </body>
+{% endraw %}
 </html>
