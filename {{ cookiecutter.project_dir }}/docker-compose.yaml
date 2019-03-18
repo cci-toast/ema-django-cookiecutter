@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 
 services:
 
@@ -10,6 +10,7 @@ services:
       - postgres_data:/var/lib/postgresql/data/
 
   web:
+    init: true
     build: .
     env_file:
       - .env
@@ -25,12 +26,14 @@ services:
       - DJANGO_READ_DOT_ENV_FILE=true
       - PGHOST=db
       - PYTHONDONTWRITEBYTECODE=true
+    stop_signal: SIGTERM
 {% if cookiecutter.redis == 'True' %}
   redis:
     image: "redis:alpine"
 {% endif -%}
 {% if cookiecutter.celery == 'True' %}
   celery:
+    init: true
     build: .
     command: celery -A config worker -l debug
     volumes:
@@ -41,6 +44,7 @@ services:
     environment:
       - DJANGO_READ_DOT_ENV_FILE=true
       - PYTHONDONTWRITEBYTECODE=true
+    stop_signal: SIGTERM
 {% endif %}
 volumes:
   postgres_data:
