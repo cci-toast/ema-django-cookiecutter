@@ -15,6 +15,9 @@
 *.code-workspace
 .vscode/
 
+### PyCharm ###
+.idea/
+
 ### Python ###
 *.pyc
 *.pyo

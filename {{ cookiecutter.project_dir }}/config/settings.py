@@ -13,7 +13,7 @@ env = envparse.Env()
 READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=False)
 if READ_DOT_ENV_FILE:
     env.read_envfile()
-    print("The .env file has been loaded. See base.py for more information")
+    print("The .env file has been loaded. See settings.py for more information")
 
 # Name of our service
 SERVICE_NAME = "{{ cookiecutter.project_name }}"
