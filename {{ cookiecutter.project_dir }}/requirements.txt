@@ -22,7 +22,7 @@ django-redis==4.10.0
 {% endif -%}
 {% if cookiecutter.celery == 'True' %}
 # Celery
-celery==4.2.0
+celery==4.2.2
 {% endif %}
 # Testing
 django-test-plus==1.1.1
