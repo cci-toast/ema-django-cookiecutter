@@ -1,12 +1,13 @@
 import envparse
 import os
+import structlog
 import sys
 import logging
 import logging.handlers
 
-import structlog
+from logging.config import dictConfig
 
-from pythonjsonlogger import jsonlogger
+from jslog4kube import LOGGING
 
 env = envparse.Env()
 
@@ -20,6 +21,9 @@ SERVICE_NAME = "{{ cookiecutter.project_name }}"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DJANGO_DEBUG", cast=bool, default=False)
+
+# Whether to log to a local ElasticSearch or not
+LOCAL_LOGGING = env("LOCAL_LOGGING", cast=bool, default=False)
 
 # Determine if we're in testing or not.
 TESTING = env("TESTING", cast=bool, default=False)
@@ -54,11 +58,13 @@ INSTALLED_APPS = [
 
 # Third-party apps
 INSTALLED_APPS += [
-    "rest_framework", 
-    "rest_framework_swagger", 
+    "rest_framework",
+    "rest_framework_swagger",
     "django_extensions",
     "health_check",
     "health_check.db",
+    {%- if cookiecutter.redis == 'True' %}"health_check.cache",{% endif -%}
+    {%- if cookiecutter.celery == 'True' %}"health_check.contrib.celery",{% endif -%}
 ]
 
 # Our Apps
@@ -174,7 +180,7 @@ structlog.configure(
         structlog.processors.StackInfoRenderer(),
         structlog.processors.format_exc_info,
         structlog.processors.UnicodeDecoder(),
-        structlog.stdlib.render_to_log_kwargs,
+        structlog.stdlib.ProcessorFormatter.wrap_for_formatter,
     ],
     context_class=dict,
     logger_factory=structlog.stdlib.LoggerFactory(),
@@ -182,22 +188,51 @@ structlog.configure(
     cache_logger_on_first_use=True,
 )
 
-# Configure Python logging
-root = logging.getLogger()
-root.setLevel(logging.INFO)
+LOGGING['loggers']['user'] = {
+    'handlers': ['default'],
+    'formatters': ['default'],
+    'propogate': False,
+    'level': 'INFO'
+}
 
+EMONEY_LOGGER_NAME = 'emoney'
 
-handler = logging.FileHandler("./python.log")
-handler.setFormatter(jsonlogger.JsonFormatter())
+# Handle local logging of 'user' logger to local ElasticSearch
+# using docker-compose.  This should not be on in deployed environments
+if LOCAL_LOGGING:
+    LOGGING['loggers'][''] = {}
+    from cmreslogging.handlers import CMRESHandler
+    LOGGING['handlers']['es'] = {
+        'level': 'DEBUG',
+        'class': 'cmreslogging.handlers.CMRESHandler',
+        'hosts': [{'host': 'elasticsearch', 'port': 9200}],
+        'es_index_name': EMONEY_LOGGER_NAME,
+        'auth_type': CMRESHandler.AuthType.NO_AUTH,
+        'use_ssl': False,
+    }
+    LOGGING['loggers']['user']['handlers'] = ['es']
 
-root.addHandler(handler)
+dictConfig(LOGGING)
 
 {% if cookiecutter.redis == "True" %}REDIS_HOST = env("REDIS_HOST", default="redis"){% endif %}
 
+{% if cookiecutter.redis == "True" %}
+# Cache
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": f"redis://{REDIS_HOST}:6379/0",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient"
+        },
+    }
+}
+{% endif %}
+
 {%- if cookiecutter.celery == "True" %}
 # Configure Celery
-CELERY_BROKER_URL = f"redis://{REDIS_HOST}:6379"
-CELERY_RESULT_BACKEND = f"redis://{REDIS_HOST}:6379"
+CELERY_BROKER_URL = f"redis://{REDIS_HOST}:6379/1"
+CELERY_RESULT_BACKEND = f"redis://{REDIS_HOST}:6379/1"
 CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"

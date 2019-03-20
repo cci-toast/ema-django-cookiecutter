@@ -12,11 +12,13 @@ gevent==1.4.0
 django-health-check==3.9.0
 
 # Logging
-python-json-logger==0.1.10
 structlog==18.1.0
 django-tracer==0.9.3
+git+https://github.com/revsys/jslog4kube#egg=jslog4kube
+CMRESHandler==1.0.0
 {% if cookiecutter.redis == 'True' %}
 redis==3.2.0
+django-redis==4.10.0
 {% endif -%}
 {% if cookiecutter.celery == 'True' %}
 # Celery

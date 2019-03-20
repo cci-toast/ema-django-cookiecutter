@@ -26,6 +26,7 @@ services:
       - DJANGO_READ_DOT_ENV_FILE=true
       - PGHOST=db
       - PYTHONDONTWRITEBYTECODE=true
+      - LOCAL_LOGGING=true
     stop_signal: SIGTERM
 {% if cookiecutter.redis == 'True' %}
   redis:
@@ -43,8 +44,30 @@ services:
       - redis
     environment:
       - DJANGO_READ_DOT_ENV_FILE=true
+      - PGHOST=db
       - PYTHONDONTWRITEBYTECODE=true
+      - LOCAL_LOGGING=true
     stop_signal: SIGTERM
 {% endif %}
+  elasticsearch:
+    image: "docker.elastic.co/elasticsearch/elasticsearch:6.1.1"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+    volumes:
+      - "./kibana/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml"
+    stop_signal: SIGKILL
+
+  kibana:
+    image: "docker.elastic.co/kibana/kibana:6.1.1"
+    depends_on:
+      - elasticsearch
+    ports:
+      - "5601:5601"
+    volumes:
+      - "./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml"
+    stop_signal: SIGKILL
 volumes:
   postgres_data:
