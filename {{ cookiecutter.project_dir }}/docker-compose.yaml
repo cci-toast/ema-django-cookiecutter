@@ -22,6 +22,7 @@ services:
       - "8000:8000"
     depends_on:
       - db
+      - elastisearch
     environment:
       - DJANGO_READ_DOT_ENV_FILE=true
       - PGHOST=db
@@ -42,6 +43,7 @@ services:
     depends_on:
       - db
       - redis
+      - elasticsearch
     environment:
       - DJANGO_READ_DOT_ENV_FILE=true
       - PGHOST=db
