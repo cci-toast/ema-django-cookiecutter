@@ -1,13 +1,9 @@
 import envparse
 import os
-import structlog
 import sys
 import logging
-import logging.handlers
 
-from logging.config import dictConfig
-
-from jslog4kube import LOGGING
+from avo.core.structlogging.configure import django_configure as log_django_configure
 
 env = envparse.Env()
 
@@ -170,49 +166,7 @@ if TESTING:
 
 # Logging setup
 # Configure struct log
-structlog.configure(
-    processors=[
-        structlog.stdlib.filter_by_level,
-        structlog.stdlib.add_logger_name,
-        structlog.stdlib.add_log_level,
-        structlog.stdlib.PositionalArgumentsFormatter(),
-        structlog.processors.TimeStamper(fmt="iso"),
-        structlog.processors.StackInfoRenderer(),
-        structlog.processors.format_exc_info,
-        structlog.processors.UnicodeDecoder(),
-        structlog.stdlib.ProcessorFormatter.wrap_for_formatter,
-    ],
-    context_class=dict,
-    logger_factory=structlog.stdlib.LoggerFactory(),
-    wrapper_class=structlog.stdlib.BoundLogger,
-    cache_logger_on_first_use=True,
-)
-
-LOGGING['loggers']['user'] = {
-    'handlers': ['default'],
-    'formatters': ['default'],
-    'propogate': False,
-    'level': 'INFO'
-}
-
-EMONEY_LOGGER_NAME = 'emoney'
-
-# Handle local logging of 'user' logger to local ElasticSearch
-# using docker-compose.  This should not be on in deployed environments
-if LOCAL_LOGGING:
-    LOGGING['loggers'][''] = {}
-    from cmreslogging.handlers import CMRESHandler
-    LOGGING['handlers']['es'] = {
-        'level': 'DEBUG',
-        'class': 'cmreslogging.handlers.CMRESHandler',
-        'hosts': [{'host': 'elasticsearch', 'port': 9200}],
-        'es_index_name': EMONEY_LOGGER_NAME,
-        'auth_type': CMRESHandler.AuthType.NO_AUTH,
-        'use_ssl': False,
-    }
-    LOGGING['loggers']['user']['handlers'] = ['es']
-
-dictConfig(LOGGING)
+LOGGING = log_django_configure(SERVICE_NAME, BASE_DIR, env)
 
 {% if cookiecutter.redis == "True" %}REDIS_HOST = env("REDIS_HOST", default="redis"){% endif %}
 
