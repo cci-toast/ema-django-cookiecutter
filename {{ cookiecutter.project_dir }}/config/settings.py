@@ -135,7 +135,7 @@ SESSION_COOKIE_NAME = "config-sessionid"
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 7 * 12
 
 # Internationalization
-# https://docs.djangoproject.com/en/1.10/topics/i18n/
+# https://docs.djangoproject.com/en/2.2/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
 
