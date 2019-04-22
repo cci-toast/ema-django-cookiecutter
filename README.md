@@ -13,7 +13,7 @@ pip install cookiecutter
 Then all you need to do is run:
 
 ```shell
-cookiecutter https://github.com/emoneyadvisor/django-cookiecutter
+cookiecutter git@github.com:emoneyadvisor/django-cookiecutter.git
 ```
 
 You will be prompted for questions and the project will be created in the
