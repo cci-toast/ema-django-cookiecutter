@@ -4,3 +4,7 @@ omit =
     manage.py
     config/*
     */migrations/*
+
+[report]
+exclude_lines =
+    @abstractmethod
