@@ -1,7 +1,8 @@
-import envparse
+import logging
 import os
 import sys
-import logging
+
+import envparse
 
 from avo.core.structlogging.configure import django_configure as log_django_configure
 
