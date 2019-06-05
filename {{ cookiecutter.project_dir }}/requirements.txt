@@ -16,7 +16,7 @@ django-tracer==0.9.3
 https://aeb1e2661dec77704ad801c4d9c136eeb5ad8475@github.com/emoneyadvisor/avo-core/archive/master.zip
 
 {% if cookiecutter.redis == 'True' %}
-redis==3.2.0
+redis==3.2.1
 django-redis==4.10.0
 {% endif -%}
 {% if cookiecutter.celery == 'True' %}
@@ -30,5 +30,5 @@ pytest==4.3.0
 pytest-cov==2.6.1
 pytest-django==3.4.8
 pytest-sugar==0.9.2
-pytest-xdist==1.26.1
+pytest-xdist==1.28.0
 whitenoise<3.4.0
