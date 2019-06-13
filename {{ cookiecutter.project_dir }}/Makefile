@@ -11,3 +11,9 @@ shell:
 
 test:
 	docker-compose run --rm web pytest
+
+isort:
+	isort -rc --atomic .
+
+lint:
+	black .
