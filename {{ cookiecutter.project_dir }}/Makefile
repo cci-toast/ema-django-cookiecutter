@@ -15,5 +15,5 @@ test:
 isort:
 	isort -rc --atomic .
 
-lint:
+black:
 	black .
