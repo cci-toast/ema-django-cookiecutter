@@ -13,7 +13,7 @@ django-health-check==3.9.0
 
 # Logging
 django-tracer==0.9.3
-https://121255215e73218edcdf1143e417ce05338705aa:@github.com/emoneyadvisor/avo-core/archive/v0.4.1.tar.gz
+https://121255215e73218edcdf1143e417ce05338705aa:@github.com/emoneyadvisor/avo-core/archive/master.tar.gz
 
 {% if cookiecutter.redis == 'True' %}
 redis==3.2.1
