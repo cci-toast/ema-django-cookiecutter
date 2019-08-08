@@ -1,0 +1,239 @@
+resource_types:
+  - name: pull-request
+    type: docker-image
+    source:
+      repository: teliaoss/github-pr-resource
+  - name: slack-notification
+    type: docker-image
+    source:
+      repository: cfcommunity/slack-notification-resource
+
+resources:
+  - name: {{ cookiecutter.project_name }}-git
+    type: git
+    icon: github-circle
+    check_every: 4h
+    # Means it will be triggered with
+    # /api/v1/teams/emoney/pipelines/{{ cookiecutter.project_name }}/resources/{{ cookiecutter.project_name }}-git/check/webhook?webhook_token=iFUICALbw9qzK6
+    webhook_token: iFUICALbw9qzK6
+    source:
+      uri: git@github.com:emoneyadvisor/{{ cookiecutter.project_name }}.git
+      depth: 1
+      private_key: ((private-repo-key))
+
+  - name: pull-request
+    type: pull-request
+    check_every: 24h
+    # Means it will be triggered with
+    # /api/v1/teams/emoney/pipelines/{{ cookiecutter.project_name }}/resources/pull-request/check/
+    webhook_token: iFUICALbw9qzK6
+    source:
+      repository: emoneyadvisor/{{ cookiecutter.project_name }}
+      access_token: ((private-api-token))
+
+  - name: notify
+    type: slack-notification
+    source:
+      url: https://hooks.slack.com/services/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
+
+task-config: &task-config
+  platform: linux
+  image_resource:
+    type: docker-image
+    source:
+      repository: revolutionsystems/concourse-dcind
+      tag: v0.1.3
+
+jobs:
+  - name: {{ cookiecutter.project_name }}
+    public: true
+    plan:
+      - get: {{ cookiecutter.project_name }}-git
+        params: {depth: 1}
+        trigger: true
+      - task: Run tests
+        privileged: true
+        config:
+          inputs:
+            - name: {{ cookiecutter.project_name }}-git
+          << : *task-config
+          run:
+            path: entrypoint.sh
+            args:
+              - bash
+              - -ceux
+              - |
+                # Run pytest in our web container
+                cd {{ cookiecutter.project_name }}-git
+
+                # Copy our test environment variables into place
+                cp env.template .env
+
+                # Run the tests
+                docker-compose run --rm web pytest
+
+                # Cleanup
+                docker-compose down
+                docker volume rm $(docker volume ls -q)
+        on_success:
+          put: notify
+          params:
+            channel: '#github'
+            icon_emoji: ':robot_face:'
+            username: {{ cookiecutter.project_name }}-ci
+            text: "✅ Build Successful!"
+        on_failure:
+          put: notify
+          params:
+            channel: '#github'
+            icon_emoji: ':robot_face:'
+            username: {{ cookiecutter.project_name }}-ci
+            text: "🛑 Build Broken!\n See https://ci.dev.avodev.io/builds/$BUILD_ID for details."
+  - name: PR-tests
+    public: true
+    plan:
+      - get: pull-request
+        trigger: true
+        version: every
+      - put: pull-request
+        params:
+          context: build
+          path: pull-request
+          status: pending
+          description: "Concourse CI build pending"
+      - task: Run tests
+        privileged: true
+        config:
+          << : *task-config
+          inputs:
+            - name: pull-request
+          run:
+            path: entrypoint.sh
+            args:
+              - bash
+              - -ceux
+              - |
+                # Run pytest in our web container
+                cd pull-request
+
+                # Copy our test environment variables into place
+                cp env.template .env
+
+                # Run the tests
+                docker-compose run --rm web pytest
+
+                # Cleanup
+                docker-compose down
+                docker volume rm $(docker volume ls -q)
+        on_failure:
+          put: pull-request
+          params:
+            context: build
+            path: pull-request
+            status: failure
+      - put: pull-request
+        params:
+          context: build
+          path: pull-request
+          status: success
+
+  - name: PR-flake8
+    public: true
+    plan:
+      - get: pull-request
+        trigger: true
+        version: every
+      - put: pull-request
+        params:
+          context: flake8
+          path: pull-request
+          status: pending
+          description: "Concourse CI flake8 pending"
+      - task: flake8
+        privileged: true
+        config:
+          << : *task-config
+          inputs:
+            - name: pull-request
+          run:
+            path: entrypoint.sh
+            args:
+              - bash
+              - -ceux
+              - |
+                # Run pytest in our web container
+                cd pull-request
+
+                # Copy our test environment variables into place
+                cp env.template .env
+
+                # Run the tests
+                docker-compose run --rm web flake8
+
+                # Cleanup
+                docker-compose down
+                docker volume rm $(docker volume ls -q)
+        on_failure:
+          put: pull-request
+          params:
+            context: flake8
+            path: pull-request
+            status: failure
+            description: "Concourse CI flake8 failure"
+      - put: pull-request
+        params:
+          context: flake8
+          path: pull-request
+          status: success
+          description: "Concourse CI flake8 success"
+
+  - name: PR-black
+    public: true
+    plan:
+      - get: pull-request
+        trigger: true
+        version: every
+      - put: pull-request
+        params:
+          context: black
+          path: pull-request
+          status: pending
+          description: "Concourse CI black pending"
+      - task: black
+        privileged: true
+        config:
+          << : *task-config
+          inputs:
+            - name: pull-request
+          run:
+            path: entrypoint.sh
+            args:
+              - bash
+              - -ceux
+              - |
+                # Run pytest in our web container
+                cd pull-request
+
+                # Copy our test environment variables into place
+                cp env.template .env
+
+                # Run the tests
+                docker-compose run --rm web black --check .
+
+                # Cleanup
+                docker-compose down
+                docker volume rm $(docker volume ls -q)
+        on_failure:
+          put: pull-request
+          params:
+            context: black
+            path: pull-request
+            status: failure
+            description: "Concourse CI black failure"
+      - put: pull-request
+        params:
+          context: black
+          path: pull-request
+          status: success
+          description: "Concourse CI black success"
+
