@@ -6,9 +6,9 @@
 
 ## Local Development Setup
 
-All REVSYS projects going forward will use Python 3.6, Docker, and Docker Compose.
+All Avocado projects going forward will use Python 3.7, Docker, and Docker Compose.
 
-Make a Python 3.6.x virtualenv.
+Make a Python 3.7.x virtualenv.
 
 Copy env.template to .env and adjust values to match your local environment:
 
