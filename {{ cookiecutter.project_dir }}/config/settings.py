@@ -155,6 +155,18 @@ USE_TZ = True
 STATIC_URL = env("STATIC_URL", default="/static/")
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
+# REST Framework Configuration
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
+        "rest_framework_jwt.authentication.JSONWebTokenAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
+    "EXCEPTION_HANDLER": "avo.core.api.exceptions.exception_handler",
+}
+
+
 # Swagger Settings
 SWAGGER_SETTINGS = {"SECURITY_DEFINITIONS": {}}
 
