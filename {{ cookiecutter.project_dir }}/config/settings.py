@@ -56,6 +56,7 @@ INSTALLED_APPS = [
 # Third-party apps
 INSTALLED_APPS += [
     "rest_framework",
+    "rest_framework.authtoken",
     "rest_framework_swagger",
     "django_extensions",
     "health_check",
@@ -161,6 +162,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.BasicAuthentication",
         "rest_framework_jwt.authentication.JSONWebTokenAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
     "EXCEPTION_HANDLER": "avo.core.api.exceptions.exception_handler",
