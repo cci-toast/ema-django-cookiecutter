@@ -23,6 +23,7 @@
 *.pyo
 *.egg-info/
 .cache/
+.mypy_cache/
 .coverage
 .tox
 .cache
