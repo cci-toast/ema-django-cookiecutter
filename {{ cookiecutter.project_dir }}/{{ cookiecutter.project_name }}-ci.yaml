@@ -47,6 +47,7 @@ task-config: &task-config
 jobs:
   - name: {{ cookiecutter.project_name }}
     public: true
+    max_in_flight: 1
     plan:
       - get: {{ cookiecutter.project_name }}-git
         params: {depth: 1}
