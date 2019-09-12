@@ -3,6 +3,7 @@ import os
 import sys
 
 import envparse
+import rollbar
 
 from avo.core.structlogging.configure import django_configure as log_django_configure
 
@@ -77,6 +78,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "rollbar.contrib.django.middleware.RollbarNotifierMiddleware",
 ]
 
 if DEBUG:
@@ -205,3 +207,11 @@ CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = "America/Los_Angeles"
 {% endif -%}
+
+
+ROLLBAR = {
+    "access_token": env("ROLLBAR_ACCESS_TOKEN"),
+    "environment": env("ROLLBAR_ENVIRONMENT", default="development"),
+    "root": BASE_DIR,
+}
+rollbar.init(**ROLLBAR)
