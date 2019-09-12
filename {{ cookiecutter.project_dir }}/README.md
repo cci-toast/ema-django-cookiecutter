@@ -51,7 +51,7 @@ Currently includes checks for:
 This is the access token for a specific project on rollbar.com. In order to
 get this token, visit https://rollbar.com/emoneyadvisor/<project-name>/settings/access_tokens/
 where `<project_name>` is the name of the rollbar project that you wish to
-send messages to.
+send messages to. The token that you should use is called `post_server_item`.
 
 ### ROLLBAR_ENVIRONMENT
 
