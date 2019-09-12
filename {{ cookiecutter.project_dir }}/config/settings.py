@@ -71,6 +71,7 @@ INSTALLED_APPS += []
 
 MIDDLEWARE = [
     "tracer.middleware.RequestID",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -81,12 +82,9 @@ MIDDLEWARE = [
     "rollbar.contrib.django.middleware.RollbarNotifierMiddleware",
 ]
 
-if DEBUG:
-    # These are necessary to turn on Whitenoise which will serve our static
-    # files while doing local development
-    MIDDLEWARE.append("whitenoise.middleware.WhiteNoiseMiddleware")
-    WHITENOISE_USE_FINDERS = True
-    WHITENOISE_AUTOREFRESH = True
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_AUTOREFRESH = True
+WHITENOISE_STATIC_PREFIX = env("WHITENOISE_STATIC_PREFIX", default="/static/")
 
 ROOT_URLCONF = "config.urls"
 
