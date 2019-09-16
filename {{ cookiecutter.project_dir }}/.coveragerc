@@ -6,6 +6,7 @@ omit =
     */migrations/*
 
 [report]
+show_missing = True
 exclude_lines =
     @abstractmethod
     @abc.abstractmethod
