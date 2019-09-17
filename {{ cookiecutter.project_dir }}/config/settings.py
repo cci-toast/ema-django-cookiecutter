@@ -209,7 +209,8 @@ CELERY_TIMEZONE = "America/Los_Angeles"
 
 ROLLBAR = {
     "access_token": env("ROLLBAR_ACCESS_TOKEN"),
-    "environment": env("ROLLBAR_ENVIRONMENT", default="development"),
+    "environment": env("ROLLBAR_ENVIRONMENT", default="local"),
     "root": BASE_DIR,
+    "enabled": env("ROLLBAR_ENVIRONMENT", default="local") != "local",
 }
 rollbar.init(**ROLLBAR)
