@@ -18,7 +18,7 @@ rollbar==0.14.7
 
 
 {% if cookiecutter.redis == 'True' %}
-redis==3.2.1
+redis==3.3.8
 django-redis==4.10.0
 {% endif -%}
 {% if cookiecutter.celery == 'True' %}
@@ -27,7 +27,7 @@ celery==4.3.0
 {% endif %}
 
 # Linting
-flake8==3.7.7
+flake8==3.7.8
 isort
 black
 
