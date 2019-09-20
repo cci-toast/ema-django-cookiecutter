@@ -13,7 +13,7 @@ django-health-check==3.11.0
 
 # Logging
 django-tracer==0.9.3
-https://121255215e73218edcdf1143e417ce05338705aa:@github.com/emoneyadvisor/avo-core/archive/master.tar.gz
+https://4c05f100bb6f920571ec8970288b09e13cca9e09:@github.com/emoneyadvisor/avo-core/archive/master.tar.gz
 rollbar==0.14.7
 
 
