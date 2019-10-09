@@ -6,6 +6,7 @@ omit =
     */migrations/*
 
 [report]
+precision = 2
 show_missing = True
 exclude_lines =
     pragma: no cover
