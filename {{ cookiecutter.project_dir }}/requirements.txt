@@ -3,7 +3,10 @@ django-extensions==2.2.1
 django-rest-auth==0.9.5
 djangorestframework==3.10.3
 django-rest-swagger==2.2.0
+structlog==19.1.0
+CMRESHandler==1.0.0
 envparse==0.2.0
+jslog4kube==1.0.6
 psycopg2-binary<2.9
 django-db-geventpool
 bumpversion<0.6
@@ -13,8 +16,9 @@ django-health-check==3.11.0
 
 # Logging
 django-tracer==0.9.3
-https://4c05f100bb6f920571ec8970288b09e13cca9e09:@github.com/emoneyadvisor/avo-core/archive/master.tar.gz
-rollbar==0.14.7
+# Removed these two for generic django app
+# https://4c05f100bb6f920571ec8970288b09e13cca9e09:@github.com/emoneyadvisor/avo-core/archive/master.tar.gz
+# rollbar==0.14.7
 
 
 {% if cookiecutter.redis == 'True' %}

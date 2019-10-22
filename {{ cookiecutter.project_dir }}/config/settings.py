@@ -3,9 +3,8 @@ import os
 import sys
 
 import envparse
-import rollbar
 
-from avo.core.structlogging.configure import django_configure as log_django_configure
+from structlogging.configure import django_configure as log_django_configure
 
 env = envparse.Env()
 
@@ -79,7 +78,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "rollbar.contrib.django.middleware.RollbarNotifierMiddleware",
 ]
 
 WHITENOISE_USE_FINDERS = True
@@ -161,11 +159,11 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.BasicAuthentication",
-         "avo.core.api.authentication.TrustedUserJSONWebTokenAuthentication",
+        # "avo.core.api.authentication.TrustedUserJSONWebTokenAuthentication",
         "rest_framework.authentication.TokenAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
-    "EXCEPTION_HANDLER": "avo.core.api.exceptions.exception_handler",
+    # "EXCEPTION_HANDLER": "avo.core.api.exceptions.exception_handler",
 }
 
 
@@ -205,12 +203,3 @@ CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = "America/Los_Angeles"
 {% endif -%}
-
-
-ROLLBAR = {
-    "access_token": env("ROLLBAR_ACCESS_TOKEN"),
-    "environment": env("ROLLBAR_ENVIRONMENT", default="local"),
-    "root": BASE_DIR,
-    "enabled": env("ROLLBAR_ENVIRONMENT", default="local") != "local",
-}
-rollbar.init(**ROLLBAR)

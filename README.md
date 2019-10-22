@@ -1,6 +1,11 @@
-# REVSYS Django Cookiecutter Template
+# REVSYS Django Cookiecutter Template / updated for Drexel Projects
 
 Our own customized to our liking Django project layout.
+
+**IMPORTANT**
+
+- updated by removing references to rollbar and other internal repo.
+- May have issues when run in production mode. Check logging setup
 
 ## Getting setup
 

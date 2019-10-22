@@ -3,12 +3,11 @@ import os
 from django.conf import settings
 
 import envparse
-import rollbar
 
 from celery import Celery
 from celery.signals import task_failure
 
-from avo.core.structlogging.configure import celery_configure as log_celery_configure
+from structlogging.configure import celery_configure as log_celery_configure
 
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
@@ -41,16 +40,13 @@ def debug_task(self):
     print("Request: {0!r}".format(self.request))
 
 
-rollbar.init(**settings.ROLLBAR)
-
-
 def celery_base_data_hook(request, data):
     data["framework"] = "celery"
 
 
-rollbar.BASE_DATA_HOOK = celery_base_data_hook
-
 
 @task_failure.connect
 def handle_task_failure(**kwargs):
-    rollbar.report_exc_info(extra_data=kwargs)
+    pass
+    # add logging elsewhere?
+    # rollbar.report_exc_info(extra_data=kwargs)
