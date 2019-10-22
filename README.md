@@ -18,7 +18,8 @@ pip install cookiecutter
 Then all you need to do is run:
 
 ```shell
-cookiecutter git@github.com:emoneyadvisor/django-cookiecutter.git
+# use the branch that does not reference avo-core:
+cookiecutter git@github.com:emoneyadvisor/django-cookiecutter.git --checkout no_avo_core
 ```
 
 You will be prompted for questions and the project will be created in the
